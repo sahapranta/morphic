@@ -1,39 +1,14 @@
 import React from 'react'
 import Link from 'next/link'
-import { SiDiscord, SiGithub, SiX } from 'react-icons/si'
-import { Button } from './ui/button'
 
 const Footer: React.FC = () => {
   return (
     <footer className="w-fit p-1 md:p-2 fixed bottom-0 right-0">
-      <div className="flex justify-end">
-        <Button
-          variant={'ghost'}
-          size={'icon'}
-          className="text-muted-foreground/50"
-        >
-          <Link href="https://discord.gg/zRxaseCuGq" target="_blank">
-            <SiDiscord size={18} />
-          </Link>
-        </Button>
-        <Button
-          variant={'ghost'}
-          size={'icon'}
-          className="text-muted-foreground/50"
-        >
-          <Link href="https://x.com/morphic_ai" target="_blank">
-            <SiX size={18} />
-          </Link>
-        </Button>
-        <Button
-          variant={'ghost'}
-          size={'icon'}
-          className="text-muted-foreground/50"
-        >
-          <Link href="https://git.new/morphic" target="_blank">
-            <SiGithub size={18} />
-          </Link>
-        </Button>
+      <div className="flex text-center text-sm text-gray-500">
+        All Rights Reserved &copy;2024
+        <Link href="https://aiapp.gg" target="_blank">
+          <span className="text-black font-medium ml-1">AIAPP. <span className='text-orange-800/70'>GG</span></span>
+        </Link>
       </div>
     </footer>
   )

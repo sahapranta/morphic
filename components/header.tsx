@@ -1,16 +1,15 @@
 import React from 'react'
 import { ModeToggle } from './mode-toggle'
-import { IconLogo } from './ui/icons'
 import { cn } from '@/lib/utils'
 import HistoryContainer from './history-container'
 
 export const Header: React.FC = async () => {
   return (
-    <header className="fixed w-full p-1 md:p-2 flex justify-between items-center z-10 backdrop-blur md:backdrop-blur-none bg-background/80 md:bg-transparent">
+    <header className="sticky py-1 md:py-2 px-4 flex justify-between items-center z-10 backdrop-filter backdrop-blur-lg shadow-md bg-gray-100/80 dark:bg-gray-400/60 border-b border-gray-200 dark:border-gray-400 md:mx-12 mx-4 mt-2 rounded-3xl">
       <div>
-        <a href="/">
-          <IconLogo className={cn('w-5 h-5')} />
-          <span className="sr-only">Morphic</span>
+        <a href="/" className='flex items-center gap-1'>
+          <img src="http://localhost:3000/images/logo.png" alt="AIAPP Logo" className={cn('h-7')} />
+          <span className="text-black dark:text-gray-300 font-extrabold text-lg">AIAPP. <span className='text-orange-800/70 dark:text-orange-400'>GG</span></span>
         </a>
       </div>
       <div className="flex gap-0.5">

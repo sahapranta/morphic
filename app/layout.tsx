@@ -14,12 +14,12 @@ const fontSans = FontSans({
   variable: '--font-sans'
 })
 
-const title = 'Morphic'
+const title = 'Research AIAPP: all in one ai'
 const description =
-  'A fully open-source AI-powered answer engine with a generative UI.'
+  'A fully AI-powered answer engine with a generative UI for your Research by AIAPP.'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://morphic.sh'),
+  metadataBase: new URL('https://research.aiapp.gg'),
   title,
   description,
   openGraph: {
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     title,
     description,
     card: 'summary_large_image',
-    creator: '@miiura'
+    creator: '@SMohtasin'
   }
 }
 
