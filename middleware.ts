@@ -5,7 +5,7 @@ export function middleware(request: NextRequest) {
     const session = request.cookies.get("aiapp")?.value;
     const { pathname } = request.nextUrl;
 
-    if (pathname == "/app") {
+    if (pathname == "/aiapp") {
         if (!session) {
             return NextResponse.next();
         } else {
