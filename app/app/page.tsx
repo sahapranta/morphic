@@ -23,11 +23,11 @@ export default function AppTokenPage() {
                 const result = await response.json();
 
                 if (result.redirect) {
-                    // router.push(result.redirect);
+                    router.push(result.redirect);
 
                 }
             } catch (error) {
-                // router.push('/login');
+                router.push('/login');
             }
         };
 
