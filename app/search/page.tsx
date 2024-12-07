@@ -16,7 +16,7 @@ export default function Page({
   const id = generateId()
 
   return (
-    <AI initialAIState={{ chatId: id, messages: [] }}>
+    <AI initialAIState={{ chatId: id, messages: [], userId: 'anonymous' }}>
       <Chat id={id} query={searchParams.q} />
     </AI>
   )
