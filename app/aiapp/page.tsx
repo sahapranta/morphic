@@ -3,11 +3,13 @@
 import { Suspense, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Spinner } from '@/components/ui/spinner';
+import { useAuth } from '@/lib/state/AuthProvider';
 
 function AppTokenPageContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const token = searchParams.get('token');
+    const { setUser } = useAuth();
 
     useEffect(() => {
         const validateToken = async () => {
@@ -23,6 +25,7 @@ function AppTokenPageContent() {
                 const result = await response.json();
 
                 if (result.redirect) {
+                    setUser(result.user);
                     router.push(result.redirect);
                 }
             } catch (error) {

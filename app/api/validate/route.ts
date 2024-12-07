@@ -10,9 +10,9 @@ export async function POST(req: NextRequest) {
 
     if (token) {
         try {
-            await CheckToken(token);
+            const res = await CheckToken(token);
             saveToken(token.toString());
-            return NextResponse.json({ redirect: '/search' }, { status: 200 });
+            return NextResponse.json({ redirect: '/search', user: res?.user }, { status: 200 });
         } catch (error) {
             return NextResponse.json({ error }, { status: 401 });
         }
