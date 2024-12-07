@@ -17,6 +17,7 @@ import { models } from '@/lib/types/models'
 import { useLocalStorage } from '@/lib/hooks/use-local-storage'
 import { getDefaultModelId } from '@/lib/utils'
 import { toast } from 'sonner'
+import { useAuth } from '@/lib/state/AuthProvider'
 
 interface ChatPanelProps {
   messages: UIState
@@ -34,6 +35,7 @@ export function ChatPanel({ messages, query, onModelChange }: ChatPanelProps) {
   const router = useRouter()
   const inputRef = useRef<HTMLTextAreaElement>(null)
   const isFirstRender = useRef(true) // For development environment
+  const { user } = useAuth();
 
   const [selectedModelId, setSelectedModelId] = useLocalStorage<string>(
     'selectedModel',
@@ -78,6 +80,10 @@ export function ChatPanel({ messages, query, onModelChange }: ChatPanelProps) {
       data.set('input', query)
     }
 
+    if (user) {
+      data.set('userId', `${user?.id || 'anonymous'}`);
+    }
+
     const responseMessage = await submit(data)
     setMessages(currentMessages => [...currentMessages, responseMessage])
   }
@@ -115,7 +121,7 @@ export function ChatPanel({ messages, query, onModelChange }: ChatPanelProps) {
   const handleClear = () => {
     setIsGenerating(false)
     setMessages([])
-    setAIMessage({ messages: [], chatId: '' })
+    setAIMessage({ messages: [], chatId: '', userId: `${user?.id || 'anonymous'}` })
     setInput('')
     router.push('/')
   }

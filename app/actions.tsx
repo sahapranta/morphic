@@ -54,6 +54,9 @@ async function submit(
   // Limit the number of messages to the maximum
   messages.splice(0, Math.max(messages.length - MAX_MESSAGES, 0))
   // Get the user input from the form data
+  const userIdEntry = formData?.get('userId');
+  const userId = typeof userIdEntry === 'string' ? userIdEntry : 'anonymous';
+
   const userInput = skip
     ? `{"action": "skip"}`
     : (formData?.get('input') as string)
@@ -61,20 +64,20 @@ async function submit(
   const content = skip
     ? userInput
     : formData
-    ? JSON.stringify(Object.fromEntries(formData))
-    : null
+      ? JSON.stringify(Object.fromEntries(formData))
+      : null
   const type = skip
     ? undefined
     : formData?.has('input')
-    ? 'input'
-    : formData?.has('related_query')
-    ? 'input_related'
-    : 'inquiry'
+      ? 'input'
+      : formData?.has('related_query')
+        ? 'input_related'
+        : 'inquiry'
 
   // Get the model from the form data (e.g., openai:gpt-4o-mini)
   const model = (formData?.get('model') as string) || 'openai:gpt-4o-mini'
   const providerId = model.split(':')[0]
-  console.log(`Using model: ${model}`)
+  // console.log(`Using model: ${model}`)
   // Check if provider is enabled
   if (!isProviderEnabled(providerId)) {
     throw new Error(
@@ -86,6 +89,7 @@ async function submit(
   if (content) {
     aiState.update({
       ...aiState.get(),
+      userId, // Store the userId in the state
       messages: [
         ...aiState.get().messages,
         {
@@ -122,7 +126,8 @@ async function submit(
 export type AIState = {
   messages: AIMessage[]
   chatId: string
-  isSharePage?: boolean
+  isSharePage?: boolean,
+  userId: string,
 }
 
 export type UIState = {
@@ -134,7 +139,8 @@ export type UIState = {
 
 const initialAIState: AIState = {
   chatId: generateId(),
-  messages: []
+  messages: [],
+  userId: 'anonymous'
 }
 
 const initialUIState: UIState = []
@@ -165,14 +171,13 @@ export const AI = createAI<AIState, UIState>({
       return
     }
 
-    const { chatId, messages } = state
+    const { chatId, messages, userId = 'anonymous' } = state
     const createdAt = new Date()
-    const userId = 'anonymous'
     const path = `/search/${chatId}`
     const title =
       messages.length > 0
         ? JSON.parse(messages[0].content)?.input?.substring(0, 100) ||
-          'Untitled'
+        'Untitled'
         : 'Untitled'
     // Add an 'end' message at the end to determine if the history needs to be reloaded
     const updatedMessages: AIMessage[] = [
@@ -193,7 +198,7 @@ export const AI = createAI<AIState, UIState>({
       title,
       messages: updatedMessages
     }
-    await saveChat(chat)
+    await saveChat(chat, userId)
   }
 })
 

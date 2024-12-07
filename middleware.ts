@@ -6,11 +6,7 @@ export function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
 
     if (pathname == "/aiapp") {
-        if (!session) {
-            return NextResponse.next();
-        } else {
-            return NextResponse.redirect(new URL("/search"));
-        }
+        return NextResponse.next();
     }
 
     // If there is no session and the user is not on the login route, redirect to login

@@ -8,6 +8,7 @@ import Footer from '@/components/footer'
 import { Sidebar } from '@/components/sidebar'
 import { Toaster } from '@/components/ui/sonner'
 import { AppStateProvider } from '@/lib/utils/app-state'
+import { AuthProvider } from '@/lib/state/AuthProvider'
 
 const fontSans = FontSans({
   subsets: ['latin'],
@@ -57,7 +58,9 @@ export default function RootLayout({
         >
           <AppStateProvider>
             <Header />
-            {children}
+            <AuthProvider>
+              {children}
+            </AuthProvider>
             <Sidebar />
             <Footer />
             <Toaster />

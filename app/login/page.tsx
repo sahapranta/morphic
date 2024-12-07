@@ -5,13 +5,20 @@ import * as Form from "@radix-ui/react-form";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { AlertMessage } from "@/components/ui/alert-message";
-import { logIn } from "@/lib/auth";
+import { logIn, User } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { useAuth } from "@/lib/state/AuthProvider";
 
 export default function Page() {
     const [errors, setErrors] = useState("");
     const [success, setSuccess] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const { setUser } = useAuth();
+
+    const storeUserToLocal = (user: User | null) => {
+        if (!user) return;
+        setUser(user);
+    }
 
     return (
         <div className="min-h-[87vh] flex items-center justify-center overflow-hidden relative">
@@ -31,13 +38,14 @@ export default function Page() {
                     setSuccess('');
                     let success = false;
                     try {
-                        const err = await logIn(formData);
-                        if (err) {
-                            setErrors(err);
-                            return;
+                        const { user, error } = await logIn(formData);
+                        if (error != null) {
+                            setErrors(error);
+                        } else {
+                            setSuccess("Login successful!");
+                            storeUserToLocal(user);
+                            success = true;
                         }
-                        setSuccess("Login successful!");
-                        success = true;
                     } catch (error) {
                         setErrors(error instanceof Error ? error.message : "An unexpected error occurred");
                     } finally {
